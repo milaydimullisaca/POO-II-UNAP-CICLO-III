@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+struct Nodo {
+    int dato;
+    Nodo* sig;
+};
+
+class Pila {
+private:
+    Nodo* cima;  // apunta al tope de la pila
+public:
+    Pila() { cima = NULL; }
+
+    void insertar(int v) {
+        Nodo* nuevo = new Nodo;
+        nuevo->dato = v;
+        nuevo->sig = cima;  // enlazar con el anterior
+        cima = nuevo;       // mover cima al nuevo
+    }
+
+    void mostrar() {
+        Nodo* aux = cima;
+        while (aux != NULL) {
+            cout << aux->dato << " ";
+            aux = aux->sig;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Pila p;
+    p.insertar(5);
+    p.insertar(8);
+    p.insertar(3);
+    p.insertar(7);
+
+    p.mostrar(); 
+
+    return 0;
+}
+
