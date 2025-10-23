@@ -1,0 +1,76 @@
+#include <iostream>
+using namespace std;
+
+class Nodo {
+private:
+    int valor;
+    Nodo* ant;
+    Nodo* sig;
+public:
+    Nodo(int v) { valor = v; ant = sig = NULL; }
+    void unirConSig(Nodo* s) { sig = s; }
+    void unirConAnt(Nodo* a) { ant = a; }
+    Nodo* retSig() { return sig; }
+    int retValor() { return valor; }
+};
+
+class ListaDoble {
+private:
+    Nodo* cabeza;
+    Nodo* cola;
+public:
+    ListaDoble() { cabeza = cola = NULL; }
+
+    void insertar(int v) {
+        Nodo* nuevo = new Nodo(v);
+        if (!cabeza)
+            cabeza = cola = nuevo;
+        else {
+            cola->unirConSig(nuevo);
+            nuevo->unirConAnt(cola);
+            cola = nuevo;
+        }
+    }
+
+    void mostrar() {
+        Nodo* aux = cabeza;
+        while (aux) {
+            cout << aux->retValor() << " ";
+            aux = aux->retSig();
+        }
+        cout << endl;
+    }
+
+    void transportar(int capacidadMetros) {
+        int capacidad = capacidadMetros * 100;
+        int suma = 0, vueltas = 0;
+        Nodo* aux = cabeza;
+        while (aux) {
+            suma = 0;
+            while (aux && suma + aux->retValor() <= capacidad) {
+                suma += aux->retValor();
+                aux = aux->retSig();
+            }
+            vueltas++;
+        }
+        cout << "vueltas totales: " << vueltas << endl;
+    }
+};
+
+int main() {
+    ListaDoble lista;
+    int n, capacidad;
+    cout << "Capacidad (m): ";
+    cin >> capacidad;
+    cout << "Cantidad de carros: ";
+    cin >> n;
+
+    for (int i = 1; i <= n; i++) {
+        int l;
+        cin >> l;
+        lista.insertar(l);
+    }
+
+    lista.transportar(capacidad);
+    return 0;
+}
